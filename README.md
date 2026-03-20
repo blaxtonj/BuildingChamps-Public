@@ -25,8 +25,39 @@ While development is complete from an engineering standpoint—including core sc
 
 
 ## What This Repo Demonstrates
-- 
+
+- Full-stack application architecture
+- Authentication and protected user flows
+- Payment processing and transactional systems (Stripe)
+- Scheduling logic and calendar integration (Google APIs)
+- Data consistency and state management across user interactions
+- Integration of multiple third-party services
+- Real-world client constraints and deployment dependencies
 
 ## Documentation
+- Architecture
+- Engineering Challenges
+- Performance Strategy
+- Key Engineering Decisions
+- User Flows 
 
 ## Tech Stack
+
+The platform integrates multiple systems—including authentication, payments, scheduling, and database persistence—requiring a full-stack architecture that balances user experience with data consistency and security.
+
+| Category | Tools & Technologies |
+| :--- | :--- |
+| **Framework** | Next.js, React, TypeScript |
+| **Authentication** | Auth0 |
+| **Styling & UI** | Tailwind CSS, Headless UI, Heroicons |
+| **Animation** | Framer Motion |
+| **Forms & Validation** | React Hook Form, Yup |
+| **Data Fetching** | SWR, Axios |
+| **Database** | MongoDB, Mongoose |
+| **Payments** | Stripe, use-shopping-cart |
+| **Scheduling & External Integrations** | Google APIs (Calendar), gapi-script |
+| **Backend Utilities** | Node.js, Nodemailer |
+| **Security & Utilities** | crypto-js, nextjs-cors |
+| **Testing** | Jest |
+| **Tooling** | ESLint, Prettier, PostCSS |
+| **Deployment & Ops** | GitHub, Vercel |
