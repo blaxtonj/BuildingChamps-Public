@@ -13,6 +13,14 @@ Unlike previous projects focused primarily on UI and performance, this applicati
 
 The core project resides in a private repository due to proprietary business logic and payment-related integrations. This public version focuses on architectural decisions, user flow design, and the engineering challenges involved in building a reliable scheduling and purchasing system
 
+## Project Status
+
+This project is currently functionally complete, but not deployed to production due to external client dependencies.
+
+Final deployment requires confirmation from the client to proceed with Google Workspace domain-wide authorization, which is needed to support scheduling and calendar integrations.
+
+While development is complete from an engineering standpoint—including core scheduling logic, purchasing flows, and state management—the project remains on hold pending client approval and communication.
+
 
 
 
