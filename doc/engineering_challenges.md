@@ -63,3 +63,137 @@ This approach ensures that:
 - session usage is tracked with full consistency across the system
 
 By treating purchased sessions as a finite resource and enforcing controlled consumption, the platform maintains strong data integrity between payments and scheduled bookings.
+
+### 2. Google Calendar Integration
+
+To handle real-time class availability and scheduling, the platform integrates directly with the **Google Calendar API**, using a custom calendar as the single source of truth for all sessions.
+
+#### Architecture Overview
+- A dedicated Google Calendar was created to manage all class sessions
+- The frontend fetches live event data using the Google API (`gapi-script`)
+- Recurring events are expanded into individual bookable time slots
+- Users interact with a custom-built calendar UI to select sessions
+
+#### Fetching & Normalizing Events
+
+Instead of relying on static data, the system dynamically retrieves events from the Google Calendar API.
+
+A key challenge was handling recurring events, which are not returned as individual bookable sessions by default. To ensure each class could be scheduled independently, recurring events are expanded into discrete instances:
+
+  
+```ts
+let res = await gapi.client.request({
+  path: `https://www.googleapis.com/calendar/v3/calendars/${calendarID}/events/${id}/instances`,
+  params: {
+    timeMin: startOfDay.toISOString(),
+    singleEvents: true,
+  },
+});
+```
+
+This normalization step allows the system to:
+
+- treat each class session as a unique booking slot
+- filter events based on real-time availability
+- eliminate the need for manual schedule management
+
+As a result:
+
+- scheduling remains fully dynamic
+- availability is always up-to-date
+- all users see consistent booking data
+
+#### Custom Calendar UI
+
+A fully custom calendar component was built using `date-fns` to:
+- render monthly views
+- handle date selection
+- display available sessions per day
+- highlight days with available classes
+
+Users can:
+- navigate months
+- view available time slots
+- select specific sessions for booking
+
+This approach provided:
+- full control over UX
+- tighter integration with scheduling logic
+- better performance compared to third-party calendar embeds
+
+#### Event Selection Flow
+
+1. User selects a date
+2. Available sessions for that day are displayed
+3. User selects a time slot
+4. Selected event is passed into the scheduling system
+
+This event data becomes the foundation for:
+- booking validation
+- payment coordination
+- attendee registration
+
+#### Integration Challenges
+
+Working with Google Calendar introduced several challenges:
+- Recurring events required additional API calls to expand instances
+- Client-side API usage required careful handling of API keys
+- Data normalization was necessary to align Google event structure with internal models
+
+These were solved by:
+- building a normalization layer for event data
+- isolating API logic into reusable utilities
+- limiting fetched data to only relevant time ranges
+
+#### Result
+- Real-time scheduling powered by an external system
+- No need for a custom-built scheduling backend
+- Scalable and easy for the client to manage
+- Seamless integration with booking and payment flows
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
