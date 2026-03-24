@@ -149,7 +149,7 @@ Key interaction flows include:
 
 - **Form Submissions**
   - General inquiries or contact forms are submitted through **/api/submit**.
-  - These are validated and persisted in MongoDB for later follow-up.
+  - These are validated and persisted in client email for later follow-up.
 
 - **Error Handling & Feedback**
   - All API responses include structured success/error messages.
