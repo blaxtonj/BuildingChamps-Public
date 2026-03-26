@@ -151,6 +151,79 @@ These were solved by:
 - Scalable and easy for the client to manage
 - Seamless integration with booking and payment flows
 
+--- 
+
+### 3. Checkout & Transaction Coordination
+
+The checkout process required coordinating multiple asynchronous systems, including internal APIs, and session provisioning logic.
+
+Unlike a simple payment flow, this system needed to ensure that:
+
+- customer data is created or retrieved
+- orders are persisted before payment confirmation
+- session entitlements are generated correctly
+- all systems remain consistent even in the event of failure
+
+This introduced challenges around sequencing, reliability, and maintaining data integrity across distributed operations.
+
+#### Checkout Flow
+
+The checkout process follows a multi-step pipeline:
+
+1. Validate form input using React Hook Form and Yup  
+2. Initialize Stripe payment elements on the client  
+3. Create a payment intent via `/api/payment_intent`  
+4. Create or retrieve a customer (`/api/customer`)  
+5. Create an order record (`/api/order`)  
+6. Generate session entitlements for each purchased product  
+7. Confirm payment using Stripe
+
+
+#### Core Challenge: Transaction Consistency
+
+A key challenge was ensuring consistency across multiple independent operations:
+
+- payment processing (Stripe)
+- database writes (customer, order, session)
+- client-side confirmation
+
+Because these operations are not inherently atomic, failures at any step could result in:
+
+- payments without session access
+- sessions created without successful payment
+- partial or inconsistent data across systems
+  
+
+#### Implementation Strategy
+
+To address this, the checkout flow was structured as a controlled sequence:
+
+- Customer creation and order persistence occur before payment confirmation  
+- Session entitlements are generated immediately after order creation  
+- Each step validates responses before proceeding  
+- Errors are captured and surfaced to prevent silent failures  
+
+Session generation uses a hash-based system:
+- each purchased package generates unique session identifiers  
+- these identifiers are later consumed during scheduling
+
+#### Session Entitlement System
+
+Instead of relying on simple counters, the system generates unique hashed session identifiers for each purchase.
+
+This enables:
+- secure tracking of session usage  
+- prevention of duplicate bookings  
+- decoupling of payment data from scheduling logic  
+
+Each session effectively becomes a consumable token tied to a purchase.
+
+#### Result
+
+- Fully functional checkout pipeline integrating payments and scheduling  
+- Consistent data flow across customer, order, and session systems  
+- Flexible session model supporting complex scheduling logic  
+- Scalable foundation for future e-commerce expansion  
 
 
 
