@@ -16,7 +16,9 @@ One of the most complex challenges in BuildingChamps was ensuring that payments 
 
 Unlike a typical booking system, users do not schedule arbitrary sessions. Instead, they purchase session packages, and each purchase generates a finite number of usable sessions.
 
-To support this, the system introduces a **hash-based session allocation model**:
+To support this, the system introduces a **hash-based session allocation model**
+
+This model acts as the bridge between payment and scheduling, ensuring that every booking is backed by a verified purchase.
 
 - each purchase creates a set of unique session identifiers (hashes)  
 - each hash represents a single usable booking  
@@ -66,7 +68,7 @@ By treating purchased sessions as a finite resource and enforcing controlled con
 
 ### 2. Google Calendar Integration
 
-To handle real-time class availability and scheduling, the platform integrates directly with the **Google Calendar API**, using a custom calendar as the single source of truth for all sessions.
+To handle real-time class availability and scheduling, the platform integrates directly with the Google Calendar API as the system of record for all scheduling data.
 
 #### Architecture Overview
 - A dedicated Google Calendar was created to manage all class sessions
@@ -206,9 +208,9 @@ if (sessions.some((session) => session.error)) {
 ```
 This approach ensures:
 
-efficient parallel processing using Promise.all
-consistent session creation across purchased items
-centralized error handling for partial failures
+- efficient parallel processing using Promise.all
+- consistent session creation across purchased items
+- centralized error handling for partial failures
 
 
 #### Core Challenge: Transaction Consistency
@@ -249,6 +251,16 @@ This enables:
 - decoupling of payment data from scheduling logic  
 
 Each session effectively becomes a consumable token tied to a purchase.
+
+#### Tradeoffs & Future Improvements
+
+Because session provisioning occurs before final payment confirmation, there is a potential risk of orphaned session records if a payment fails.
+
+In a production-grade system, this could be improved by:
+
+- moving session creation to a Stripe webhook triggered after successful payment
+- ensuring session provisioning is tied directly to confirmed transactions
+- implementing cleanup or rollback mechanisms for failed operations
 
 #### Result
 
