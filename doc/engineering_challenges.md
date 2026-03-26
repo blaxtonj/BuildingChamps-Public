@@ -179,6 +179,38 @@ The checkout process follows a multi-step pipeline:
 7. Confirm payment using Stripe
 
 
+#### Session Provisioning
+
+A critical part of the checkout flow involves provisioning session entitlements for each purchased product.
+
+Because users can purchase multiple session packages in a single transaction, the system must generate these sessions concurrently while ensuring all operations complete successfully before advancing the transaction.
+
+```ts
+// Parallel session provisioning for purchased products
+const sessions = await Promise.all(
+  products.map((product) =>
+    createSession({
+      stripe_id: product.stripe_id,
+      customer: { email: user?.email },
+      product: `${product.name} ${product.description}`,
+    })
+  )
+);
+
+// Validate all session creations succeeded
+if (sessions.some((session) => session.error)) {
+  console.error("Session provisioning failed", sessions);
+} else {
+  console.log("Sessions created successfully", sessions);
+}
+```
+This approach ensures:
+
+efficient parallel processing using Promise.all
+consistent session creation across purchased items
+centralized error handling for partial failures
+
+
 #### Core Challenge: Transaction Consistency
 
 A key challenge was ensuring consistency across multiple independent operations:
