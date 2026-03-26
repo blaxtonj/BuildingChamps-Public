@@ -66,6 +66,8 @@ This approach ensures that:
 
 By treating purchased sessions as a finite resource and enforcing controlled consumption, the platform maintains strong data integrity between payments and scheduled bookings.
 
+---
+
 ### 2. Google Calendar Integration
 
 To handle real-time class availability and scheduling, the platform integrates directly with the Google Calendar API as the system of record for all scheduling data.
