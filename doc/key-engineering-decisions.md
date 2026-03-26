@@ -32,3 +32,23 @@ By generating unique hashes:
 - prevents overbooking at a system level
 - ensures strong consistency between purchases and bookings
 - enables flexible scheduling logic without modifying payment data
+
+---
+
+### 2. Using Google Calendar as Source of Truth
+
+---
+
+### 3. Client-Orchestrated Checkout Flow
+
+---
+
+### 4. Parallel Session Provisioning with Promise.all
+
+---
+
+### 5. Custom Calendar UI vs Third-Party Component
+
+---
+
+### 6. Separation of API Responsibilities (REST Design)
