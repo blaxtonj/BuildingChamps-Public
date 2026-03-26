@@ -6,6 +6,8 @@ Unlike a traditional marketing site, this application operates as a multi-system
 
 The architecture is designed to ensure data consistency, secure transactions, and reliable communication between client-side interactions and server-side logic, while remaining scalable and maintainable.
 
+---
+
 ### System Overview
 The application is built as a full-stack Next.js platform that combines
 client-side interactions with server-side API routes to handle
@@ -20,6 +22,8 @@ Core systems include:
 - Auth0 for authentication and protected user flows
 
 These systems work together to support a complete user journey from browsing to booking and payment.
+
+---
 
 ### API Structure & Responsibilities
 
@@ -48,6 +52,8 @@ Key API domains include:
 
 Each route is responsible for validating input, executing business logic, interacting with external services or the database, and returning a structured response to the client.
 
+---
+
 ### Google Calendar Integration
 
 Scheduling functionality is powered by the Google Calendar API, enabling the application to manage real-time availability and automate session bookings.
@@ -69,6 +75,8 @@ This integration introduced additional architectural considerations, including:
 - handling edge cases such as overlapping bookings or failed event creation  
 
 By integrating directly with Google Calendar, the platform ensures that scheduling remains accurate, automated, and tightly coupled with real-world availability.
+
+---
 
 ### Payment Processing
 
@@ -98,6 +106,8 @@ This integration required careful coordination between:
 
 By structuring payments as a required step in the booking flow, the system maintains consistency between financial transactions and scheduled sessions.
 
+---
+
 ### Data Persistence
 
 All critical application data—including user profiles, bookings, payment confirmations, and session schedules—is stored in **MongoDB** via **Mongoose**.
@@ -122,6 +132,8 @@ The persistence layer interacts closely with API routes:
 - This guarantees consistency between stored data and external systems  
 
 By centralizing data in MongoDB, the platform can reliably track bookings, manage session availability, and audit transactions while keeping the frontend decoupled from business logic.
+
+---
 
 ### Client–Server Interaction
 
