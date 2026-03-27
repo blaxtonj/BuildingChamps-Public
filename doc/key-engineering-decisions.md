@@ -163,48 +163,61 @@ By explicitly coordinating each step on the client, the system ensures that:
 ### 4. Parallel Session Provisioning with Promise.all
 
 #### Decision
+Session entitlements are generated in parallel using `Promise.all` during checkout, rather than sequentially.
 
 #### Context
+When a user completes a purchase, they may buy multiple session packages in a single transaction. Each package requires generating one or more session entitlements (hashed identifiers).
+
+This means a single checkout could trigger multiple independent session creation operations.
+
+A naïve implementation would process these sequentially, increasing latency and degrading the user experience.
 
 #### Alternatives Considered
 
-#### Why This Approach
-
-#### Trade-offs
-
-#### Impact
-
-
----
-
-### 5. Custom Calendar UI vs Third-Party Component
-
-#### Decision
-
-#### Context
-
-#### Alternatives Considered
+- Sequential Processing (for-loop / await chain)
+    - Simpler to implement
+    - Easier to debug
+    - Slower as operations block each other
+- Backend Batch Processing
+    - Move session creation entirely to the server
+    - Added complexity and tighter backend coupling
+    - Less flexibility in handling partial failures on the client
 
 #### Why This Approach
+Using `Promise.all` allows all session creation operations to execute concurrently:
+
+```ts
+const sessions = await Promise.all(
+  products.map((product) =>
+    createSession({
+      stripe_id: product.stripe_id,
+      customer: { email: user?.email },
+      product: `${product.name} ${product.description}`,
+    })
+  )
+);
+```
+This approach provides:
+
+- improved performance through parallel execution
+- reduced checkout latency
+- clean, declarative orchestration of async operations
+
+It also enables a centralized validation step:
+
+```ts
+const hasError = sessions.some((session) => session.error);
+```
 
 #### Trade-offs
+- If one operation fails, all results must still be evaluated manually
+- No built-in rollback mechanism (not transactional)
+- Requires explicit error handling for partial failures
 
 #### Impact
+- Faster and more responsive checkout experience
+- Scales efficiently as more products/session types are added
+- Keeps session provisioning logic simple and composable
+- Provides a clear pattern for handling concurrent async workflows
 
-
----
-
-### 6. Separation of API Responsibilities (REST Design)
-
-#### Decision
-
-#### Context
-
-#### Alternatives Considered
-
-#### Why This Approach
-
-#### Trade-offs
-
-#### Impact
 
