@@ -35,11 +35,10 @@ While development is complete from an engineering standpoint—including core sc
 - Real-world client constraints and deployment dependencies
 
 ## Documentation
-- [Architecture](..doc/Architecture.md)
-- Engineering Challenges
-- Performance Strategy
-- Key Engineering Decisions
-- User Flows 
+- [Architecture](/doc/architecture.md)
+- [Engineering Challenges](/doc/engineering-challenges.md)
+- [Key Engineering Decisions](/doc/key-engineering-decisions.md)
+- [User Flows](/doc/user-flow.md) 
 
 ## Tech Stack
 
