@@ -108,3 +108,19 @@ User → Checkout → Payment (Stripe)
   - internal database
   - Google Calendar
 - Real-time availability prevents double booking
+
+---
+
+### Edge Cases & Failure Handling
+
+- Payment succeeds but session creation fails
+  → handled via validation + error logging
+
+- User attempts to schedule without available sessions
+  → blocked by hash validation
+
+- Google Calendar API fails
+  → fallback: no sessions displayed
+
+- Partial failures during checkout
+  → detected via Promise.all validation
